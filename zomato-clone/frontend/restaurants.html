@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants - Zomato Clone</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>Discover Restaurants</h1>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search restaurants by name, cuisine, or location...">
+                    <button onclick="applyFilter()" class="search-btn">Search</button>
+                </div>
+                <div class="filter-box">
+                    <select id="cuisineFilter">
+                        <option value="">All Cuisines</option>
+                    </select>
+                    <select id="locationFilter">
+                        <option value="">All Locations</option>
+                    </select>
+                    <select id="priceFilter">
+                        <option value="">All Price Ranges</option>
+                        <option value="$">$ - Budget</option>
+                        <option value="$$">$$ - Moderate</option>
+                        <option value="$$$">$$$ - Expensive</option>
+                        <option value="$$$$">$$$$ - Luxury</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="restaurant-list" class="restaurant-grid">
+            <!-- Restaurants will be loaded here -->
+        </div>
+        <div class="load-more-container">
+            <button id="loadMore" class="load-more-btn" onclick="loadMore()">Load More Restaurants</button>
+        </div>
+    </main>
+
+    <script src="js/restaurants.js"></script>
+</body>
+</html> 

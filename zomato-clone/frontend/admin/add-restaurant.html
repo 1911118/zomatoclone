@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Restaurant | Admin Panel</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="container">
+                <h1>Add New Restaurant</h1>
+                <nav>
+                    <a href="dashboard.html" class="nav-link">← Back to Dashboard</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="form-container">
+                <form id="addRestaurantForm" class="admin-form">
+                    <div class="form-group">
+                        <label for="name">Restaurant Name</label>
+                        <input type="text" id="name" name="name" required 
+                               placeholder="Enter restaurant name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" required 
+                               placeholder="Enter restaurant location">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cuisine">Cuisine</label>
+                        <input type="text" id="cuisine" name="cuisine" required 
+                               placeholder="Enter cuisine type">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price_range">Price Range</label>
+                        <select id="price_range" name="price_range" required>
+                            <option value="">Select price range</option>
+                            <option value="$">$ - Budget</option>
+                            <option value="$$">$$ - Moderate</option>
+                            <option value="$$$">$$$ - Expensive</option>
+                            <option value="$$$$">$$$$ - Luxury</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" required 
+                                  placeholder="Enter restaurant description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image_url">Image URL</label>
+                        <input type="url" id="image_url" name="image_url" 
+                               placeholder="Enter image URL (optional)">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Add Restaurant</button>
+                        <button type="reset" class="btn btn-secondary">Reset Form</button>
+                    </div>
+                </form>
+
+                <div id="message" class="message-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('addRestaurantForm');
+            const messageContainer = document.getElementById('message');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    showMessage('Please login first', 'error');
+                    window.location.href = '../login.html';
+                    return;
+                }
+
+                const formData = {
+                    name: form.name.value.trim(),
+                    location: form.location.value.trim(),
+                    cuisine: form.cuisine.value.trim(),
+                    price_range: form.price_range.value,
+                    description: form.description.value.trim(),
+                    image_url: form.image_url.value.trim() || null
+                };
+
+                try {
+                    showMessage('Adding restaurant...', 'info');
+                    
+                    const response = await fetch('http://localhost:5000/api/admin/restaurants', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showMessage('Restaurant added successfully!', 'success');
+                        form.reset();
+                    } else {
+                        showMessage(data.message || 'Failed to add restaurant', 'error');
+                    }
+                } catch (error) {
+                    showMessage('Server error. Please try again later.', 'error');
+                    console.error('Error:', error);
+                }
+            });
+
+            function showMessage(message, type) {
+                messageContainer.textContent = message;
+                messageContainer.className = `message-container ${type}`;
+            }
+        });
+    </script>
+</body>
+</html> 

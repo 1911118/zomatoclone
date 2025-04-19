@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants - Zomato Clone</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>Restaurants</h1>
+            <div class="header-actions">
+                <button onclick="window.location.href='add-restaurant.html'" class="add-btn">Add Restaurant</button>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <main>
+            <div class="restaurants-section">
+                <div class="filters">
+                    <input type="text" id="searchInput" placeholder="Search restaurants..." onkeyup="filterRestaurants()">
+                    <select id="cuisineFilter" onchange="filterRestaurants()">
+                        <option value="">All Cuisines</option>
+                        <!-- Cuisine options will be populated dynamically -->
+                    </select>
+                    <select id="locationFilter" onchange="filterRestaurants()">
+                        <option value="">All Locations</option>
+                        <!-- Location options will be populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table id="restaurantsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Cuisine</th>
+                                <th>Price Range</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="restaurantsTableBody">
+                            <!-- Restaurants will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/restaurants.js"></script>
+</body>
+</html> 
