@@ -17,16 +17,14 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: process.env.CORS_ORIGIN || '*', // Allow all origins in production
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Logging middleware
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+app.use(morgan('combined')); // Use combined format in production
 
 // Body parsing middleware
 app.use(express.json());
@@ -43,8 +41,17 @@ app.use('/api/users', userRoutes);
 app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'ok',
-    environment: process.env.NODE_ENV,
+    environment: process.env.NODE_ENV || 'production',
     timestamp: new Date().toISOString()
+  });
+});
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Zomato Clone API is running',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'production'
   });
 });
 
@@ -60,6 +67,6 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}`);
 });
